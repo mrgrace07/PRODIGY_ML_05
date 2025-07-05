@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Prediction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f6fa;
+            padding: 40px;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        label {
+            font-weight: 600;
+            display: block;
+            margin-top: 20px;
+            color: #34495e;
+        }
+        input[type="file"],
+        input[type="text"],
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            margin-top: 25px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ecf9ff;
+            border-left: 6px solid #3498db;
+            border-radius: 8px;
+        }
+        .result ul {
+            list-style: none;
+            padding: 0;
+        }
+        .result li {
+            margin: 8px 0;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #aaa;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🍛 Food Nutrition Finder</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        <label>Upload Food Image</label>
+        <input type="file" name="image" accept="image/*">
+
+        <label>Or Enter Dish Name</label>
+        <input type="text" name="dish_name" placeholder="e.g. dosa, idli, biryani">
+
+        <button type="submit">Get Nutrition Info</button>
+    </form>
+
+    {% if result %}
+    <div class="result">
+        {% if result.prediction != 'Error' %}
+            <h3>Nutrition Info</h3>
+            {% if result.nutrition %}
+                <ul>
+                    {% for dish in result.nutrition %}
+                        <ul style="margin-bottom: 20px; padding-left: 0;">
+                            {% for key, value in dish.items() %}
+                                <li><strong>{{ key }}:</strong> {{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                        <hr>
+                    {% endfor %}
+
+                </ul>
+            {% else %}
+                <p>No nutrition info found for this dish.</p>
+            {% endif %}
+        {% else %}
+            <p class="error"><strong>Error:</strong> {{ result.nutrition.Error }}</p>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+
+</body>
+</html>
